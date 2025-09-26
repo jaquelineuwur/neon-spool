@@ -9,9 +9,11 @@ import { Slider } from "@/components/ui/slider";
 interface Material {
   id: string;
   name: string;
+  materialType: string;
   costPerKg: number;
   available: number;
   icon: string;
+  color: string;
 }
 
 interface SelectedMaterial {
@@ -60,7 +62,7 @@ export const MaterialSelector = ({ materials, selectedMaterials, onMaterialsChan
           </Button>
         </CardTitle>
         <CardDescription>
-          Selecciona uno o más materiales para proyectos multicolor
+          Selecciona filamentos, resinas y componentes para tu proyecto
         </CardDescription>
       </CardHeader>
       
@@ -73,6 +75,7 @@ export const MaterialSelector = ({ materials, selectedMaterials, onMaterialsChan
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-medium text-foreground flex items-center space-x-2">
                   <span className="text-lg">{material?.icon}</span>
+                  <span className="text-lg">{material?.color}</span>
                   <span>Material {index + 1}</span>
                 </h4>
                 {selectedMaterials.length > 1 && (
@@ -102,10 +105,12 @@ export const MaterialSelector = ({ materials, selectedMaterials, onMaterialsChan
                       <SelectItem key={material.id} value={material.id}>
                         <div className="flex items-center space-x-3 w-full">
                           <span className="text-lg">{material.icon}</span>
+                          <span className="text-lg">{material.color}</span>
                           <div className="flex-1">
                             <div className="font-medium">{material.name}</div>
                             <div className="text-xs text-muted-foreground">
-                              ${material.costPerKg} MXN/kg • {material.available} kg disponible
+                              ${material.costPerKg} MXN/kg • {material.available} 
+                              {material.materialType === "component" ? " uds" : " kg"} disponible
                             </div>
                           </div>
                         </div>

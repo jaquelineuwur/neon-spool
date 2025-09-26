@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { History as HistoryIcon, Search, Filter, Calendar, FileText, Eye } from "lucide-react";
+import { History as HistoryIcon, Search, Filter, Calendar, FileText, Eye, Package, Beaker, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,11 @@ const History = () => {
     {
       id: 1,
       name: "Llavero personalizado",
-      material: "PLA Blanco",
-      weight: 60,
-      cost: 27,
+      materials: [
+        { name: "PLA Blanco Premium", type: "filament", icon: "🧵", color: "⚪", weight: 60, cost: 25.20 }
+      ],
+      totalWeight: 60,
+      totalCost: 27,
       date: "20/09/2025",
       time: "2.5 hrs",
       status: "completed",
@@ -27,9 +29,12 @@ const History = () => {
     {
       id: 2,
       name: "Soporte para teléfono",
-      material: "PETG Transparente",
-      weight: 200,
-      cost: 90,
+      materials: [
+        { name: "PETG Transparente HD", type: "filament", icon: "🧵", color: "💎", weight: 180, cost: 78.40 },
+        { name: "Tornillos M3x12", type: "component", icon: "⚙️", color: "🔘", weight: 20, cost: 15.60 }
+      ],
+      totalWeight: 200,
+      totalCost: 90,
       date: "18/09/2025",
       time: "6 hrs",
       status: "completed", 
@@ -39,10 +44,12 @@ const History = () => {
     },
     {
       id: 3,
-      name: "Engranaje prototipo",
-      material: "ABS Negro",
-      weight: 150,
-      cost: 75,
+      name: "Engranaje prototipo con resina",
+      materials: [
+        { name: "Resina Tough Gris", type: "resin", icon: "🧪", color: "⚫", weight: 150, cost: 65.25 }
+      ],
+      totalWeight: 150,
+      totalCost: 75,
       date: "15/09/2025",
       time: "4.5 hrs",
       status: "completed",
@@ -52,10 +59,13 @@ const History = () => {
     },
     {
       id: 4,
-      name: "Figura decorativa",
-      material: "PLA Azul",
-      weight: 180,
-      cost: 65,
+      name: "Figura decorativa multicolor",
+      materials: [
+        { name: "PLA Azul Premium", type: "filament", icon: "🧵", color: "🔵", weight: 120, cost: 45.60 },
+        { name: "PLA Blanco Premium", type: "filament", icon: "🧵", color: "⚪", weight: 60, cost: 22.80 }
+      ],
+      totalWeight: 180,
+      totalCost: 65,
       date: "12/09/2025", 
       time: "8 hrs",
       status: "completed",
@@ -65,10 +75,13 @@ const History = () => {
     },
     {
       id: 5,
-      name: "Herramienta personalizada",
-      material: "TPU Flexible Rojo",
-      weight: 90,
-      cost: 120,
+      name: "Herramienta personalizada híbrida",
+      materials: [
+        { name: "ABS Negro Industrial", type: "filament", icon: "🧵", color: "⚫", weight: 70, cost: 36.40 },
+        { name: "Insertos Roscados M4", type: "component", icon: "⚙️", color: "🟡", weight: 20, cost: 60.00 }
+      ],
+      totalWeight: 90,
+      totalCost: 120,
       date: "10/09/2025",
       time: "3 hrs",
       status: "completed",
@@ -78,7 +91,16 @@ const History = () => {
     }
   ];
 
-  const materials = ["Todos", "PLA Blanco", "ABS Negro", "PETG Transparente", "PLA Azul", "TPU Flexible Rojo"];
+  const materialTypes = ["Todos", "Filamentos", "Resinas", "Componentes"];
+  
+  const getMaterialTypeIcon = (type: string) => {
+    switch (type) {
+      case "filament": return "🧵";
+      case "resin": return "🧪";  
+      case "component": return "⚙️";
+      default: return "📦";
+    }
+  };
   
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -108,8 +130,8 @@ const History = () => {
   };
 
   const totalProjects = projects.length;
-  const totalRevenue = projects.reduce((acc, p) => acc + p.cost, 0);
-  const totalWeight = projects.reduce((acc, p) => acc + p.weight, 0);
+  const totalRevenue = projects.reduce((acc, p) => acc + p.totalCost, 0);
+  const totalWeight = projects.reduce((acc, p) => acc + p.totalWeight, 0);
   const avgCost = totalRevenue / totalProjects;
 
   return (
@@ -167,9 +189,9 @@ const History = () => {
               <SelectValue placeholder="Filtrar por material" />
             </SelectTrigger>
             <SelectContent>
-              {materials.map((material) => (
-                <SelectItem key={material} value={material.toLowerCase().replace(/\s+/g, '-')}>
-                  {material}
+              {materialTypes.map((type) => (
+                <SelectItem key={type} value={type.toLowerCase().replace(/\s+/g, '-')}>
+                  {type}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -219,8 +241,17 @@ const History = () => {
                   
                   <div className="flex flex-wrap gap-4 text-sm">
                     <div className="flex items-center space-x-1">
-                      <span className="text-muted-foreground">Material:</span>
-                      <span className="text-neon-cyan font-medium">{project.material}</span>
+                      <span className="text-muted-foreground">Materiales:</span>
+                      <div className="flex flex-wrap gap-1">
+                        {project.materials.map((material, idx) => (
+                          <span key={idx} className="text-neon-cyan font-medium flex items-center space-x-1">
+                            <span>{material.icon}</span>
+                            <span>{material.color}</span>
+                            <span className="text-xs">{material.name.split(' ').slice(0, 2).join(' ')}</span>
+                            {idx < project.materials.length - 1 && <span className="text-muted-foreground">•</span>}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                     <div className="flex items-center space-x-1">
                       <span className="text-muted-foreground">Complejidad:</span>
@@ -234,8 +265,8 @@ const History = () => {
                 {/* Stats */}
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-muted-foreground">Peso:</span>
-                    <span className="text-sm font-medium text-foreground">{project.weight}g</span>
+                    <span className="text-sm text-muted-foreground">Peso total:</span>
+                    <span className="text-sm font-medium text-foreground">{project.totalWeight}g</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-muted-foreground">Tiempo:</span>
@@ -255,7 +286,7 @@ const History = () => {
                 <div className="flex flex-col justify-between">
                   <div className="text-center lg:text-right">
                     <div className="text-2xl font-bold text-neon-green">
-                      ${project.cost} MXN
+                      ${project.totalCost} MXN
                     </div>
                     <p className="text-sm text-muted-foreground">Costo total</p>
                   </div>

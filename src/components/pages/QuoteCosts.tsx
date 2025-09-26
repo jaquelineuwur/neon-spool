@@ -23,13 +23,21 @@ const QuoteCosts = () => {
   const [notes, setNotes] = useState("");
 
   const materials = [
-    { id: "pla-white", name: "PLA Blanco", costPerKg: 400, available: 1.2, icon: "🤍" },
-    { id: "abs-black", name: "ABS Negro", costPerKg: 520, available: 0.5, icon: "⚫" },
-    { id: "petg-clear", name: "PETG Transparente", costPerKg: 680, available: 2.0, icon: "💎" },
-    { id: "tpu-red", name: "TPU Flexible Rojo", costPerKg: 850, available: 0.3, icon: "🔴" },
-    { id: "pla-blue", name: "PLA Azul", costPerKg: 420, available: 1.8, icon: "🔵" },
-    { id: "pla-green", name: "PLA Verde", costPerKg: 420, available: 1.5, icon: "🟢" },
-    { id: "pla-yellow", name: "PLA Amarillo", costPerKg: 420, available: 0.8, icon: "🟡" }
+    // Filaments with updated structure
+    { id: "pla-white", name: "PLA Blanco Premium", materialType: "filament", costPerKg: 400, available: 1.2, icon: "🧵", color: "⚪" },
+    { id: "abs-black", name: "ABS Negro Industrial", materialType: "filament", costPerKg: 520, available: 0.5, icon: "🧵", color: "⚫" },
+    { id: "petg-clear", name: "PETG Transparente HD", materialType: "filament", costPerKg: 680, available: 2.0, icon: "🧵", color: "💎" },
+    { id: "pla-blue", name: "PLA Azul Premium", materialType: "filament", costPerKg: 420, available: 1.8, icon: "🧵", color: "🔵" },
+    { id: "pla-green", name: "PLA Verde", materialType: "filament", costPerKg: 420, available: 1.5, icon: "🧵", color: "🟢" },
+    { id: "pla-yellow", name: "PLA Amarillo", materialType: "filament", costPerKg: 420, available: 0.8, icon: "🧵", color: "🟡" },
+    // Resins
+    { id: "resin-standard", name: "Resina Standard Gris", materialType: "resin", costPerKg: 850, available: 1.0, icon: "🧪", color: "⚫" },
+    { id: "resin-flexible", name: "Resina Flexible", materialType: "resin", costPerKg: 1200, available: 0.25, icon: "🧪", color: "💎" },
+    { id: "resin-tough", name: "Resina Tough", materialType: "resin", costPerKg: 950, available: 0.5, icon: "🧪", color: "🟫" },
+    // Components
+    { id: "screws-m3", name: "Tornillos M3x12", materialType: "component", costPerKg: 2500, available: 50, icon: "⚙️", color: "🔘" },
+    { id: "inserts-m4", name: "Insertos Roscados M4", materialType: "component", costPerKg: 5000, available: 15, icon: "⚙️", color: "🟡" },
+    { id: "bearings", name: "Rodamientos 608", materialType: "component", costPerKg: 15000, available: 8, icon: "⚙️", color: "⚫" }
   ];
 
   const printers = [
